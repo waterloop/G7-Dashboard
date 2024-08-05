@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+message BMSData {
+    string timestamp = 1;
+    float voltage = 2;
+    float current = 3;
+    repeated float battery_temperature = 4;
+}
+
+message BMSDataMessage {
+    int32 id = 1;
+    string timestamp = 2;
+    float voltage = 3;
+    float current = 4;
+    repeated float battery_temperature = 5;
+    string error_message = 6;
+}
+
+message LIMData {
+    string timestamp = 1;
+    repeated float lim_temperature = 2;
+}
+
+message LIMDataMessage {
+    int32 id = 1;
+    string timestamp = 2;
+    repeated float lim_temperature = 3;
+}
+
+message IMUData {
+    string timestamp = 1;
+    float imu_data = 2;
+}
+
+message IMUDataMessage {
+    int32 id = 1;
+    string timestamp = 2;
+    float imu_data = 3;
+}
+
+message PressureSensorData {
+    string timestamp = 1;
+    float pressure_sensor_data = 2;
+}
+
+message PressureSensorDataMessage {
+    int32 id = 1;
+    string timestamp = 2;
+    float pressure_sensor_data = 3;
+}
+
+message StatusUpdateData {
+    string timestamp = 1;
+    string state = 2;
+}
+
+message StatusUpdateDataMessage {
+    int32 id = 1;
+    string timestamp = 2;
+    string state = 3;
+}
+
+message CatchAllErrorMessage {
+    int32 id = 1;
+    string timestamp = 2;
+    string errors = 3;
+}
+
+service DataReceiver {
+    rpc ReceiveBMSData(BMSData) returns (BMSDataMessage) {}
+    rpc ReceiveLIMData(LIMData) returns (LIMDataMessage) {}
+    rpc ReceiveIMUData(IMUData) returns (IMUDataMessage) {}
+    rpc ReceivePressureSensorData(PressureSensorData) returns (PressureSensorDataMessage) {}
+    rpc ReceiveStatusUpdate(StatusUpdateDataMessage) returns (StatusUpdateDataMessage) {}
+    rpc ReceiveCatchAllError(CatchAllErrorMessage) returns (CatchAllErrorMessage) {}
+}
