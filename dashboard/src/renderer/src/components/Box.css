@@ -1,0 +1,27 @@
+.box {
+    background-color: rgb(40, 40, 40);
+    padding: 20px;
+    text-align: center;
+    color: white;
+
+    min-width: 200px;
+    min-height: 200px;
+  }
+  
+  .box-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .box-description {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+  
+  .box-content {
+    font-size: 0.9em;
+  }
+
+  .stretched {
+    grid-column: span 3;
+  }
