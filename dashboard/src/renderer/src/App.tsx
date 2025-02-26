@@ -1,12 +1,41 @@
 import './App.css'
-import Versions from './components/Versions'
 import Box from './components/Box'
+import { useEffect, useState } from 'react'
+
+import { fetchBMSData, fetchIMUData } from './components/Ret'
+import { BMSData, BMSDataMessage, IMUData, IMUDataMessage } from "../../../services_pb";
+
+
+
+
 
 function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+
+  const [bmsData, setBmsData] = useState<BMSDataMessage | null>(null);
+  const [imuData, setImuData] = useState<IMUDataMessage | null>(null);
+
+  useEffect(() => {
+    const updateData = async() => {
+      try {
+        const bms = await fetchBMSData();
+        const imu = await fetchIMUData();
+        setBmsData(bms);
+        setImuData(imu);
+      }
+      catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    }
+
+    updateData();
+    const interval = setInterval(updateData, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
+      <div>{bmsData}</div>
+      <div>{imuData}</div>
       <div className="grid-container">
         <Box title="Box 1" description="Data 1" />
         <Box title="Box 2" description="Data 2" />
