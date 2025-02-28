@@ -1,19 +1,43 @@
-import * as grpc from '@grpc/grpc-js';
-import * as dataReceiverProto from '../../../../services_grpc_pb.js';
+//import * as grpc from '@grpc/grpc-js';
+//import {DataReceiverClient } from '../../../../services_grpc_pb.js';
+//import { BMSData, BMSDataMessage, IMUData, IMUDataMessage } from "../../../../services_pb";
+
+const grpc = require("@grpc/grpc-js");
+const {DataReceiverClient} = require('../../../../services_grpc_pb.js')
+const { BMSData, BMSDataMessage, IMUData, IMUDataMessage } = require('../../../../services_pb');
 
 // ... (Inside your component)
-const client = new dataReceiverProto.DataReceiverClient(
-  'raspberrypi-ip-address:50051', // Replace with your Raspberry Pi's IP and port
+const client = new DataReceiverClient(
+  'localhost:50051', // Replace with your Raspberry Pi's IP and port
   grpc.credentials.createInsecure() // Use secure credentials in production
 );
 
-const bmsData = new dataReceiverProto.BMSData();
-// ... (Set the values of bmsData)
+export const fetchBMSData = (): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const request = new BMSData();
+    client.recieveBMS(request, (err, response) => {
+      if (err) {
+        console.error("grpc (BMSData):", err);
+        reject(err);
+      }
+      else {
+        resolve(response)
+      }
+    });
+  });
+};
 
-client.receiveBMSData(bmsData, (err, response) => {
-  if (err) {
-    console.error('Error sending BMS data:', err);
-  } else {
-    console.log('BMS data sent successfully:', response);
-  }
-});
+export const fetchIMUData = (): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const request = new IMUData();
+    client.receiveIMUData(request, (err, response) => {
+      if (err) {
+        console.error("grpc error (IMUData):", err);
+        reject(err);
+      }
+      else {
+        resolve(response);
+      }
+    });
+  });
+};
