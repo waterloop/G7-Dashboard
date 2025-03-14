@@ -1,7 +1,11 @@
 "use strict";
 const electron = require("electron");
 const preload = require("@electron-toolkit/preload");
-const api = {};
+const grpc = require("@grpc/grpc-js");
+const api = {
+  grpc
+  // Expose the gRPC module
+};
 if (process.contextIsolated) {
   try {
     electron.contextBridge.exposeInMainWorld("electron", preload.electronAPI);

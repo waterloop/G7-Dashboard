@@ -21,6 +21,8 @@ function App(): JSX.Element {
         const imu = await fetchIMUData();
         setBmsData(bms);
         setImuData(imu);
+        console.log("BMS Data:", bms);
+        console.log("IMU Data:", imu);
       }
       catch (err) {
         console.error("Error fetching data:", err);
@@ -34,8 +36,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <div>{bmsData}</div>
-      <div>{imuData}</div>
+     
       <div className="grid-container">
         {/* This is box number one */}
         <Box title="Box 1" description="Data 1" />
